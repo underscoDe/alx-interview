@@ -43,7 +43,7 @@ def pascal_triangle(n):
     if type(n) is not int and n < 0:
         return ([])
     row, inner_row = [], []
-    for i in range(0, n + 1):
+    for i in range(n):
         for j in range(0, i + 1):
             inner_row.append(ncr(i, j))
         row.append(inner_row)
