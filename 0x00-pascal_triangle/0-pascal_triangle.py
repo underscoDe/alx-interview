@@ -4,32 +4,6 @@ Pascal's Triangle
 '''
 
 
-def factorial(x):
-    '''
-    func: factorial
-        returns the factorial of a given number
-    args:
-        <int: n> : the given number (> 0)
-    return:
-        <int>
-    '''
-    return (1) if (x == 0 or x == 1) else (x * factorial(x - 1))
-
-
-def ncr(i, j):
-    '''
-    func: ncr
-        returns a number resulting from Combinations
-        that works out for any value at any place in Pascal's triangle
-        formula: !n / !k * (n - k)!
-    args:
-        <int n, int n> : n and k from the formula above
-    return:
-        <int>
-    '''
-    return (int(factorial(i) / (factorial(j) * factorial(i - j))))
-
-
 def pascal_triangle(n):
     '''
     func: pascal_triangle
@@ -42,11 +16,13 @@ def pascal_triangle(n):
     '''
     if type(n) is not int and n < 0:
         return ([])
-    row, inner_row = [], []
+    row = []
     for i in range(n):
-        for j in range(0, i + 1):
-            inner_row.append(ncr(i, j))
-        row.append(inner_row)
-        inner_row = []
+        row.append([])
+        row[i].append(1)
+        if (i > 0):
+            for j in range(1, i):
+                row[i].append(row[i - 1][j - 1] + row[i - 1][j])
+            row[i].append(1)
 
     return (row)
