@@ -3,7 +3,7 @@
 
 
 def primeFactorization(x):
-    """Returns True if x is prime, False otherwise"""
+    """Returns prime factorization elements of x"""
     div = 2
     array = list()
     while (div <= x):
