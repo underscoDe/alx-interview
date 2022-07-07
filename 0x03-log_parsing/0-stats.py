@@ -1,47 +1,45 @@
 #!/usr/bin/python3
-"""Reads from standard input and computes metrics."""
+""" Stats """
+from sys import stdin
 
 
-def print_stats(size, status_codes):
-    """Print accumulated metrics."""
-    print("File size: {}".format(size))
-    for key in sorted(status_codes):
-        print("{}: {}".format(key, status_codes[key]))
+def print_log_stats(file_size, stats):
+    """Print stats"""
+    print(f'File size: {file_size}')
+    for k in sorted(stats):
+        print(f'{k}: {stats[k]}')
 
-if __name__ == "__main__":
-    from sys import stdin
 
-    size = 0
-    status_codes = {}
-    valid_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
+if __name__ == '__main__':
+    """Reads stdin line by line and computes metrics"""
     count = 0
+    total_size = 0
+    status_codes = [200, 301, 400, 401, 403, 404, 405, 500]
+    statuses_count = {}
 
     try:
         for line in stdin:
+            line_details = line.split(' - ')[1]
             if count == 10:
-                print_stats(size, status_codes)
-                count = 1
+                print_log_stats(total_size, statuses_count)
+                count = 0
             else:
                 count += 1
 
-            line = line.split()
-
             try:
-                size += int(line[-1])
-            except (IndexError, ValueError):
+                total_size += int(line_details.split()[-1])
+            except (ValueError, IndexError):
                 pass
 
             try:
-                if line[-2] in valid_codes:
-                    if status_codes.get(line[-2], -1) == -1:
-                        status_codes[line[-2]] = 1
+                code = int(line_details.split()[-2])
+                if code in status_codes:
+                    if code in statuses_count:
+                        statuses_count[code] += 1
                     else:
-                        status_codes[line[-2]] += 1
-            except IndexError:
+                        statuses_count[code] = 1
+            except (KeyError, IndexError):
                 pass
-
-        print_stats(size, status_codes)
-
     except KeyboardInterrupt:
-        print_stats(size, status_codes)
+        print_log_stats(total_size, statuses_count)
         raise
