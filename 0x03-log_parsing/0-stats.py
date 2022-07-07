@@ -10,28 +10,29 @@ def print_log_stats(file_size, stats):
         print(f'{k}: {stats[k]}')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    size = 0
+    status_codes = {}
+    valid_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
     count = 0
-    total_size = 0
-    status_codes = [200, 301, 400, 401, 403, 404, 405, 500]
-    statuses_count = {}
 
     try:
         for line in stdin:
-            line = line.split()
             if count == 10:
-                print_log_stats(total_size, status_codes)
+                print_log_stats(size, status_codes)
                 count = 1
             else:
                 count += 1
 
+            line = line.split()
+
             try:
-                total_size += int(line[-1])
+                size += int(line[-1])
             except (IndexError, ValueError):
                 pass
 
             try:
-                if line[-2] in status_codes:
+                if line[-2] in valid_codes:
                     if status_codes.get(line[-2], -1) == -1:
                         status_codes[line[-2]] = 1
                     else:
@@ -39,8 +40,8 @@ if __name__ == '__main__':
             except IndexError:
                 pass
 
-        print_log_stats(total_size, status_codes)
+        print_log_stats(size, status_codes)
 
     except KeyboardInterrupt:
-        print_log_stats(total_size, status_codes)
+        print_log_stats(size, status_codes)
         raise
