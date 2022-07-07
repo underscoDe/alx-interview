@@ -12,8 +12,9 @@ from sys import stdin
 def print_log_stats(file_size, stats):
     """Print computed metrics."""
     print(f'File size: {file_size}')
-    for k in sorted(stats):
-        print(f'{k}: {stats[k]}')
+    for k, v in sorted(stats.items()):
+        if v:
+            print(f'{k}: {v}')
 
 
 if __name__ == '__main__':
