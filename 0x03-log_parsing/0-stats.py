@@ -26,13 +26,8 @@ if __name__ == '__main__':
 
     try:
         for line in stdin:
+            count += 1
             line_details = line.split(' - ')[1]
-            if count == 10:
-                print_log_stats(total_size, statuses_count)
-                count = 0
-            else:
-                count += 1
-
             try:
                 total_size += int(line_details.split()[-1])
             except (ValueError, IndexError):
@@ -47,6 +42,9 @@ if __name__ == '__main__':
                         statuses_count[code] = 1
             except (KeyError, IndexError):
                 pass
+
+        if not count % 10:
+            print_log_stats(total_size, statuses_count)
     except KeyboardInterrupt:
         print_log_stats(total_size, statuses_count)
         raise
