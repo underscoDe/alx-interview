@@ -1,10 +1,16 @@
 #!/usr/bin/python3
-""" Stats """
+"""Reads from standard input and computes metrics.
+
+After every ten lines or the input of a keyboard interruption (CTRL + C),
+prints the following statistics:
+    - Total file size up to that point.
+    - Count of read status codes up to that point.
+"""
 from sys import stdin
 
 
 def print_log_stats(file_size, stats):
-    """Print stats"""
+    """Print computed metrics."""
     print(f'File size: {file_size}')
     for k in sorted(stats):
         print(f'{k}: {stats[k]}')
