@@ -10,7 +10,7 @@ def print_log_stats(file_size, stats):
         print(f'{k}: {stats[k]}')
 
 
-def log_stats():
+if __name__ == '__main__':
     """Reads stdin line by line and computes metrics"""
     count = 0
     total_size = 0
@@ -43,7 +43,3 @@ def log_stats():
     except KeyboardInterrupt:
         print_log_stats(total_size, statuses_count)
         raise
-
-
-if __name__ == '__main__':
-    log_stats()
