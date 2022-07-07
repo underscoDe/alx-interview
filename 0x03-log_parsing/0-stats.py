@@ -1,16 +1,16 @@
 #!/usr/bin/python3
-""" Stats """
-from sys import stdin
+"""Reads from standard input and computes metrics."""
 
 
-def print_log_stats(file_size, stats):
-    """Print stats"""
-    print(f'File size: {file_size}')
-    for k in sorted(stats):
-        print(f'{k}: {stats[k]}')
-
+def print_stats(size, status_codes):
+    """Print accumulated metrics."""
+    print("File size: {}".format(size))
+    for key in sorted(status_codes):
+        print("{}: {}".format(key, status_codes[key]))
 
 if __name__ == "__main__":
+    from sys import stdin
+
     size = 0
     status_codes = {}
     valid_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     try:
         for line in stdin:
             if count == 10:
-                print_log_stats(size, status_codes)
+                print_stats(size, status_codes)
                 count = 1
             else:
                 count += 1
@@ -40,8 +40,8 @@ if __name__ == "__main__":
             except IndexError:
                 pass
 
-        print_log_stats(size, status_codes)
+        print_stats(size, status_codes)
 
     except KeyboardInterrupt:
-        print_log_stats(size, status_codes)
+        print_stats(size, status_codes)
         raise
