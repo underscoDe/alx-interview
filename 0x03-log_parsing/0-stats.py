@@ -1,17 +1,27 @@
 #!/usr/bin/python3
-'''Log Parsing'''
-from sys import stdin
+"""Reads from standard input and computes metrics.
+
+After every ten lines or the input of a keyboard interruption (CTRL + C),
+prints the following statistics:
+    - Total file size up to that point.
+    - Count of read status codes up to that point.
+"""
 
 
 def print_log_stats(file_size, stats):
-    """Prints computed metrics."""
+    """Print accumulated metrics.
+
+    Args:
+        size (int): The accumulated read file size.
+        status_codes (dict): The accumulated count of status codes.
+    """
     print(f'File size: {file_size}')
     for k in sorted(stats):
         print(f'{k}: {stats[k]}')
 
 
 if __name__ == '__main__':
-
+    from sys import stdin
     count = 0
     total_size = 0
     status_codes = [200, 301, 400, 401, 403, 404, 405, 500]
