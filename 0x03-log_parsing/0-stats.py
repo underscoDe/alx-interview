@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-"""Log Parsing"""
 from sys import stdin
 
 
