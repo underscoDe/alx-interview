@@ -1,23 +1,18 @@
 #!/usr/bin/python3
-"""Reads from standard input and computes metrics.
-
-After every ten lines or the input of a keyboard interruption (CTRL + C),
-prints the following statistics:
-    - Total file size up to that point.
-    - Count of read status codes up to that point."""
+"""
+Log Parsing
+"""
 from sys import stdin
 
 
 def print_log_stats(file_size, stats):
-    """Print computed metrics."""
+    """Prints computed metrics."""
     print(f'File size: {file_size}')
-    for k, v in sorted(stats.items()):
-        if v:
-            print(f'{k}: {v}')
+    for k in sorted(stats):
+        print(f'{k}: {stats[k]}')
 
 
 if __name__ == '__main__':
-    """Reads stdin line by line and computes metrics"""
     count = 0
     total_size = 0
     status_codes = [200, 301, 400, 401, 403, 404, 405, 500]
@@ -25,7 +20,12 @@ if __name__ == '__main__':
 
     try:
         for line in stdin:
-            count += 1
+            if count == 10:
+                print_log_stats(total_size, statuses_count)
+                count = 0
+            else:
+                count += 1
+
             line_details = line.split(' - ')[1]
             try:
                 total_size += int(line_details.split()[-1])
@@ -41,9 +41,6 @@ if __name__ == '__main__':
                         statuses_count[code] = 1
             except (KeyError, IndexError):
                 pass
-
-        if not count % 10:
-            print_log_stats(total_size, statuses_count)
     except KeyboardInterrupt:
         print_log_stats(total_size, statuses_count)
         raise
