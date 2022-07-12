@@ -9,18 +9,22 @@ def validUTF8(data):
     bits_count = 0
 
     for i in range(len(data)):
-        temp_helper = 1 << 7
-        while temp_helper & data[i]:
-            bits_count += 1
-            temp_helper >>= 1
+        if bits_count == 0:
+            temp_helper = 1 << 7
+            while temp_helper & data[i]:
+                bits_count += 1
+                temp_helper >>= 1
 
-        if bits_count > 4:
-            return False
+            if bits_count == 0:
+                continue
 
-        for j in range(1, bits_count):
-            if i + j >= len(data):
+            if bits_count > 4:
                 return False
-            if not (data[i + j] & helper1 and not (data[i + j] & helper2)):
-                return False, '10'
-        i += bits_count - 1
-    return True
+        else:
+            for j in range(1, bits_count):
+                if i + j >= len(data):
+                    return False
+                if not (data[i + j] & helper1 and not (data[i + j] & helper2)):
+                    return False
+        bits_count -= 1
+    return bits_count == 0
